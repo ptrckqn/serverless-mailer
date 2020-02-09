@@ -21,28 +21,35 @@ app.use(bodyParser.json());
 app.post("/", (req, res) => {
   const name = req.body.name;
   const email = req.body.email;
-  const phone = req.body.phone;
-  const company = req.body.company;
-  const location = req.body.location;
+  const to = req.body.to;
+  const subject = req.body.subject;
   const body = req.body.body;
-  const product = req.body.product;
+  const debug = req.body.debug;
+
+  let debugData = "";
+  if (debug) {
+    debugData = "\n\n--- DEBUG ---\n\n";
+    for (let key in req.body) {
+      debugData += `${key}: ${req.body[key]}\n`;
+    }
+  }
 
   const emailParams = {
-    Source: "", // Your Verified Email
+    Source: "p.quan@me.com", // Your Verified Email
     Destination: {
-      ToAddresses: [""] // Your verfied Email
+      ToAddresses: debug === true ? ["p.quan@me.com"] : ["pquannn@gmail.com"] // Your verfied Email ToAddresses: []
     },
     ReplyToAddresses: [req.body.email],
     Message: {
       Body: {
         Text: {
           Charset: "UTF-8",
-          Data: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nCompany: ${company}\nLocation: ${location}\nProduct: ${product}\n\n ${body}`
+          Data: `Name: ${name}\nEmail: ${email}\n\nBody:\n\t${body}${debugData}`
         }
       },
       Subject: {
         Charset: "UTF-8",
-        Data: "You Received a Message from www.KnoGeo.com"
+        Data: subject
       }
     }
   };
@@ -56,5 +63,9 @@ app.post("/", (req, res) => {
     }
   });
 });
+
+// app.listen(3001, () => {
+//   console.log("app on 3001");
+// });
 
 module.exports.form = serverless(app);
