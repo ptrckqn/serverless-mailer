@@ -37,7 +37,7 @@ app.post("/", (req, res) => {
   const emailParams = {
     Source: "p.quan@me.com", // Your Verified Email
     Destination: {
-      ToAddresses: debug === true ? ["p.quan@me.com"] : ["pquannn@gmail.com"] // Your verfied Email ToAddresses: []
+      ToAddresses: debug === true ? ["p.quan@me.com"] : [to] // Your verfied Email ToAddresses: []
     },
     ReplyToAddresses: [req.body.email],
     Message: {
